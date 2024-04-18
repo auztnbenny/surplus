@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:surplus/location/mylocation.dart';
 
 import 'package:surplus/nonfood/nonfooddetails.dart';
 
 class UserInputPagen extends StatelessWidget {
+  final double? latitude;
+  final double? longitude;
+
+  UserInputPagen({required this.latitude, required this.longitude});
   final itemNameController = TextEditingController();
   final itemImageController = TextEditingController();
   final dateOfPurchaseController = TextEditingController();
@@ -21,6 +26,16 @@ class UserInputPagen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to MyLocation widget to get current location
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyLocation()),
+                );
+              },
+              child: Text('Get Current Location'),
+            ),
             TextFormField(
               controller: itemNameController,
               decoration: InputDecoration(labelText: 'Item Name'),
@@ -44,14 +59,15 @@ class UserInputPagen extends StatelessWidget {
                 );
                 if (pickedDate != null) {
                   dateOfPurchaseController.text = pickedDate
-                      .toString(); // Set selected date to the text field
+                      .toString()
+                      .split(' ')[0]; // Set selected date to the text field
                 }
               },
             ),
             SizedBox(height: 20.0),
             TextFormField(
               controller: amountController,
-              decoration: InputDecoration(labelText: 'Amount'),
+              decoration: InputDecoration(labelText: 'Count'),
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 20.0),

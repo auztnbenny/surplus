@@ -57,7 +57,9 @@ class CustomPopup extends StatelessWidget {
                   // Handle Non-Food button press
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserInputPagen()),
+                    MaterialPageRoute(
+                        builder: (context) => UserInputPagen(
+                            latitude: latitude, longitude: longitude)),
                   );
                 },
                 child: Text('Non-Food'),

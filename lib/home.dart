@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:surplus/add.dart';
 import 'package:surplus/chat/chat_main.dart';
 import 'package:surplus/food/fooddetails.dart';
+import 'package:surplus/food/foodelaborate.dart';
 import 'package:surplus/login.dart';
-
 import 'package:surplus/nonfood/nonfooddetails.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,6 +13,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, // Set to false to remove back arrow
         actions: [
           IconButton(
             onPressed: () {
@@ -28,13 +29,11 @@ class HomePage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Greeting section and search bar with padding at the top
           Padding(
-            padding: EdgeInsets.only(top: 10.0, left: 20.0), // Adjust padding
+            padding: EdgeInsets.only(top: 10.0, left: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Greeting section
                 Row(
                   children: [
                     SizedBox(height: 10.0),
@@ -42,37 +41,34 @@ class HomePage extends StatelessWidget {
                       'Welcome back,',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w300, // Light font weight
+                        fontWeight: FontWeight.w300,
                       ),
                     ),
-                    SizedBox(width: 5.0), // Add some space between texts
+                    SizedBox(width: 5.0),
                     Text(
                       'User',
                       style: TextStyle(
-                        fontSize: 20.0, // Increased font size
+                        fontSize: 20.0,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
                 ),
-                // Add space between greeting and search bar
-                // Curved search bar
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: Container(
-                    height: 50.0, // Adjust search bar height
-                    width: MediaQuery.of(context).size.width -
-                        40.0, // Adjust width
-                    color: Colors.grey[200], // Light grey background
+                    height: 50.0,
+                    width: MediaQuery.of(context).size.width - 40.0,
+                    color: Colors.grey[200],
                     child: TextField(
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                         hintText: 'Search for items...',
-                        border: InputBorder.none, // Remove default border
+                        border: InputBorder.none,
                         contentPadding: EdgeInsets.only(
                           left: 15.0,
                           top: 10.0,
-                        ), // Adjust padding
+                        ),
                       ),
                     ),
                   ),
@@ -83,30 +79,28 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          // Container with green gradient background below search bar
           Positioned(
-            top: 120.0, // Adjust bottom padding as needed
-            left: 20.0, // Adjust left padding as needed
-            right: 20.0, // Adjust right padding (optional)
+            top: 120.0,
+            left: 20.0,
+            right: 20.0,
             child: Container(
-              height: 200.0, // Adjust container height
+              height: 200.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
-                    Colors.green[400]!, // Lighter green
-                    Colors.green[700]!, // Darker green
+                    Colors.green[400]!,
+                    Colors.green[700]!,
                   ],
                 ),
               ),
-              // Add your content here (optional)
             ),
           ),
           Positioned(
-            top: 180.0, // Adjust button position from bottom
-            left: 40.0, // Adjust button position from left (optional)
+            top: 180.0,
+            left: 40.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -133,39 +127,34 @@ class HomePage extends StatelessWidget {
             height: 20,
           ),
           Positioned(
-            top: 280.0, // Adjust button position from bottom
-            left: 40.0, // Adjust button position from left (optional)
+            top: 280.0,
+            left: 40.0,
             child: ElevatedButton(
               onPressed: () {
                 // Handle button press action
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => PositionSelection()),
-                // );
               },
               child: Text(
                 "Share now",
                 style: TextStyle(
-                  color: Colors.black, // Set text color to black
+                  color: Colors.black,
                   fontWeight: FontWeight.w400,
                 ),
               ),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.white, // Set text color to black
-                elevation: 3, // Add a bit of shadow
+                backgroundColor: Colors.white,
+                elevation: 3,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                minimumSize: Size(100.0, 30.0), // Set desired width and height
+                minimumSize: Size(100.0, 30.0),
               ),
             ),
           ),
           SizedBox(height: 20),
-          // Heading "Categories"
           Positioned(
-            top: 380.0, // Adjust top padding as needed
-            left: 20.0, // Adjust left padding as needed
+            top: 380.0,
+            left: 20.0,
             child: Text(
               'Categories',
               style: TextStyle(
@@ -174,10 +163,9 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          // Row with three buttons
           Positioned(
-            top: 420.0, // Adjust top padding as needed
-            left: 20.0, // Adjust left padding as needed
+            top: 420.0,
+            left: 20.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -192,23 +180,16 @@ class HomePage extends StatelessWidget {
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
-                    elevation: MaterialStateProperty.all<double>(
-                        3), // Add a bit of shadow
+                    elevation: MaterialStateProperty.all<double>(3),
                   ),
                   child: Text(
                     'Food',
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-                SizedBox(width: 20), // Add space between buttons
+                SizedBox(width: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // Navigate to both FoodDetailsPage and NonFoodDetailsPage
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FoodDetailsPage()),
-                    );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -218,8 +199,7 @@ class HomePage extends StatelessWidget {
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
-                    elevation: MaterialStateProperty.all<double>(
-                        3), // Add a bit of shadow
+                    elevation: MaterialStateProperty.all<double>(3),
                   ),
                   child: Text(
                     'Non-food',
@@ -229,27 +209,103 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
+          Positioned(
+            top: 480.0,
+            left: 20.0,
+            right: 20.0,
+            bottom: 40.0,
+            child: StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('foods').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+                  return Center(child: Text('No food items found.'));
+                }
+
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    final foodData = snapshot.data!.docs[index].data()
+                        as Map<String, dynamic>;
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FoodDetailImagePage(
+                              foodName: foodData['food_name'],
+                              description: foodData['description'],
+                              expiryDate: foodData['expiry_date'],
+                              kilogram: foodData['kilogram'],
+                              imageUrl: foodData['image_url'],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          padding: EdgeInsets.all(20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                foodData['food_name'],
+                                style: TextStyle(
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 20.0),
+                              if (foodData['image_url'] != null)
+                                Image.network(
+                                  foodData['image_url'],
+                                  width: 200,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                ),
+                              SizedBox(height: 20.0),
+                              Text('Description: ${foodData['description']}'),
+                              SizedBox(height: 10.0),
+                              Text('Expiry Date: ${foodData['expiry_date']}'),
+                              SizedBox(height: 10.0),
+                              Text('Kilogram: ${foodData['kilogram']}'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: ClipRect(
         child: Container(
-          height: 60.0, // Adjust the height as needed
+          height: 60.0,
           child: BottomAppBar(
-            shape:
-                CircularNotchedRectangle(), // Rounded shape for the bottom app bar
+            shape: CircularNotchedRectangle(),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
-                  onPressed: () {
-                    // Navigate to home page
-                  },
+                  onPressed: () {},
                   icon: Icon(Icons.home),
                 ),
                 IconButton(
-                  onPressed: () {
-                    // Navigate to search page
-                  },
+                  onPressed: () {},
                   icon: Icon(Icons.search),
                 ),
                 Container(
@@ -257,7 +313,7 @@ class HomePage extends StatelessWidget {
                   height: 50.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.green, // Green circle
+                    color: Colors.green,
                   ),
                   child: IconButton(
                     onPressed: () {
@@ -265,24 +321,19 @@ class HomePage extends StatelessWidget {
                         context,
                         MaterialPageRoute(builder: (context) => CustomPopup()),
                       );
-                      // Add action for plus button
                     },
                     icon: Icon(Icons.add),
-                    color: Colors.white, // White plus icon
+                    color: Colors.white,
                   ),
                 ),
                 IconButton(
                   onPressed: () {
                     Get.to(UserListScreen());
-
-                    // Navigate to message page
                   },
                   icon: Icon(Icons.message),
                 ),
                 IconButton(
-                  onPressed: () {
-                    // Navigate to user profile page
-                  },
+                  onPressed: () {},
                   icon: Icon(Icons.account_circle),
                 ),
               ],
