@@ -37,8 +37,19 @@ class _SignUpFormState extends State<SignUpForm> {
       padding: EdgeInsets.all(20.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Image.asset('assets/logo.png'),
+          SizedBox(height: 10.0),
+          Text(
+            'Enter Your Details!',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(height: 20.0),
           TextField(
             controller: _nameController,
             decoration: InputDecoration(
@@ -82,10 +93,14 @@ class _SignUpFormState extends State<SignUpForm> {
             obscureText: true,
           ),
           SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: _signUp,
-            child: Text('Sign Up'),
-          ),
+          SizedBox(
+            width: 170, // Adjust the width as needed
+            height: 50, // Adjust the height as needed
+            child: ElevatedButton(
+              onPressed: _signUp,
+              child: Text('Sign Up'),
+            ),
+          )
         ],
       ),
     );
@@ -115,8 +130,10 @@ class _SignUpFormState extends State<SignUpForm> {
         password: password,
       )
           .then((userCredential) {
-        // User created successfully, store additional details in Firestore
+        // User created successfully, set display name and store additional details in Firestore
         String uid = userCredential.user!.uid;
+        User? user = userCredential.user;
+        user?.updateDisplayName(name); // Set display name
         FirebaseFirestore.instance.collection('users').doc(uid).set({
           'name': name,
           'email': email,

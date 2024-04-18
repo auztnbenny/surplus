@@ -1,23 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:surplus/food/foodinput.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:surplus/add.dart';
+import 'package:surplus/chat/chat_main.dart';
+import 'package:surplus/food/fooddetails.dart';
+import 'package:surplus/login.dart';
+
+import 'package:surplus/nonfood/nonfooddetails.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Navigate to login screen
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           // Greeting section and search bar with padding at the top
           Padding(
-            padding: EdgeInsets.only(top: 30.0, left: 20.0), // Adjust padding
+            padding: EdgeInsets.only(top: 10.0, left: 20.0), // Adjust padding
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Greeting section
                 Row(
                   children: [
-                    SizedBox(height: 70.0),
+                    SizedBox(height: 10.0),
                     Text(
                       'Welcome back,',
                       style: TextStyle(
@@ -57,12 +77,15 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 30,
+                ),
               ],
             ),
           ),
           // Container with green gradient background below search bar
           Positioned(
-            top: 170.0, // Adjust bottom padding as needed
+            top: 120.0, // Adjust bottom padding as needed
             left: 20.0, // Adjust left padding as needed
             right: 20.0, // Adjust right padding (optional)
             child: Container(
@@ -82,7 +105,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 210.0, // Adjust button position from bottom
+            top: 180.0, // Adjust button position from bottom
             left: 40.0, // Adjust button position from left (optional)
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,8 +129,11 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
           Positioned(
-            top: 290.0, // Adjust button position from bottom
+            top: 280.0, // Adjust button position from bottom
             left: 40.0, // Adjust button position from left (optional)
             child: ElevatedButton(
               onPressed: () {
@@ -157,10 +183,11 @@ class HomePage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => EventsPage()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FoodDetailsPage()),
+                    );
                   },
                   style: ButtonStyle(
                     backgroundColor:
@@ -176,10 +203,17 @@ class HomePage extends StatelessWidget {
                 SizedBox(width: 20), // Add space between buttons
                 ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => MyWidget()),
-                    // );
+                    // Navigate to both FoodDetailsPage and NonFoodDetailsPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FoodDetailsPage()),
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NonFoodDetailsPage()),
+                    );
                   },
                   style: ButtonStyle(
                     backgroundColor:
@@ -227,6 +261,10 @@ class HomePage extends StatelessWidget {
                   ),
                   child: IconButton(
                     onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CustomPopup()),
+                      );
                       // Add action for plus button
                     },
                     icon: Icon(Icons.add),
@@ -235,10 +273,8 @@ class HomePage extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => UserInputPage()),
-                    );
+                    Get.to(UserListScreen());
+
                     // Navigate to message page
                   },
                   icon: Icon(Icons.message),
